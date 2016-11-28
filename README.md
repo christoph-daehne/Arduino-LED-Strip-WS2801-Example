@@ -11,7 +11,22 @@ It should work with almost no adjustment on any `Arduino`–like controller.
 
 ## Setup
 
+### STM Nucleo F103RB
+
 * connect the *5V* and *GND* PINs
 * connect *GPIO PIN 13* to *CK*
 * connect *GPIO PIN 11* to *SI*
-* install program 
+* change `#define SERIAL Serial` to `#define SERIAL Serial1`
+* install program
+
+### STM32F103C8
+
+* connect the *5V* and *GND* PINs
+* connect *PA5* to *CK*
+* connect *PA7* to *SI*
+* install program
+* (sometimes) manually reset
+
+## Watch on YouTube
+
+It should look like [this](https://www.youtube.com/watch?v=vOKymU7Ov0c).
