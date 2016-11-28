@@ -1,7 +1,7 @@
 #include <SPI.h>
 #include <math.h>
 
-// basic example for LED String WS2801
+// basic example for LED Strip WS2801
 // CLK <-> PIN 13
 // SI  <-> PIN 11
 
@@ -10,8 +10,9 @@
  *****************/
 
 SPISettings spiSettings(1000000 /* 1Mhz */, MSBFIRST, SPI_MODE0);
+#define SERIAL Serial // Serial1 for Nucleo Board
 #define LEDS_COUNT 32
-#define SPEED 60 // 1 ... 60
+#define SPEED 25 // 1 ... 60
 
 /**************
    LED DRIVER
@@ -55,19 +56,19 @@ void leds_setAll(Color color) {
 */
 void leds_set(int index, Color color) {
   if (index >= 0 && index < LEDS_COUNT) {
-    Serial1.print("setting LED ");
-    Serial1.print(index);
-    Serial1.print(" to (");
-    Serial1.print(color.r);
-    Serial1.print(", ");
-    Serial1.print(color.g);
-    Serial1.print(", ");
-    Serial1.print(color.b);
-    Serial1.println(")");
+    SERIAL.print("setting LED ");
+    SERIAL.print(index);
+    SERIAL.print(" to (");
+    SERIAL.print(color.r);
+    SERIAL.print(", ");
+    SERIAL.print(color.g);
+    SERIAL.print(", ");
+    SERIAL.print(color.b);
+    SERIAL.println(")");
     _leds_colors[index] = color;
   } else {
-    Serial1.print("ignoring out-of-bounds index ");
-    Serial1.println(index);
+    SERIAL.print("ignoring out-of-bounds index ");
+    SERIAL.println(index);
   }
 }
 
@@ -75,7 +76,7 @@ void leds_set(int index, Color color) {
    sends the current colors to the LEDs
 */
 void leds_commit() {
-  Serial1.println("sending colors to LEDs");
+  SERIAL.println("sending colors to LEDs");
   SPI.beginTransaction(spiSettings);
   for (int i = 0; i < LEDS_COUNT; i++)  {
     Color current = _leds_colors[i];
@@ -91,12 +92,12 @@ void leds_commit() {
  **********/
 
 void setup() {
-  Serial1.begin(115200);
-  Serial1.println("setting up...");
+  SERIAL.begin(115200);
+  SERIAL.println("setting up...");
 
-  SPI.begin();
+  SERIAL.begin();
   leds_setAll(RGB(0, 0, 0));
-  Serial1.println("setup complete");
+  SERIAL.println("setup complete");
 }
 
 int mode = 0;
