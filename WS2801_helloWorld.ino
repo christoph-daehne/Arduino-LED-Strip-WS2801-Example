@@ -10,7 +10,7 @@
  *****************/
 
 SPISettings spiSettings(1000000 /* 1Mhz */, MSBFIRST, SPI_MODE0);
-#define SERIAL Serial // Serial1 for Nucleo Board
+#define _SERIAL_ Serial // Serial1 for Nucleo Board
 #define LEDS_COUNT 32
 #define SPEED 25 // 1 ... 60
 
@@ -56,19 +56,19 @@ void leds_setAll(Color color) {
 */
 void leds_set(int index, Color color) {
   if (index >= 0 && index < LEDS_COUNT) {
-    SERIAL.print("setting LED ");
-    SERIAL.print(index);
-    SERIAL.print(" to (");
-    SERIAL.print(color.r);
-    SERIAL.print(", ");
-    SERIAL.print(color.g);
-    SERIAL.print(", ");
-    SERIAL.print(color.b);
-    SERIAL.println(")");
+    _SERIAL_.print("setting LED ");
+    _SERIAL_.print(index);
+    _SERIAL_.print(" to (");
+    _SERIAL_.print(color.r);
+    _SERIAL_.print(", ");
+    _SERIAL_.print(color.g);
+    _SERIAL_.print(", ");
+    _SERIAL_.print(color.b);
+    _SERIAL_.println(")");
     _leds_colors[index] = color;
   } else {
-    SERIAL.print("ignoring out-of-bounds index ");
-    SERIAL.println(index);
+    _SERIAL_.print("ignoring out-of-bounds index ");
+    _SERIAL_.println(index);
   }
 }
 
@@ -76,7 +76,7 @@ void leds_set(int index, Color color) {
    sends the current colors to the LEDs
 */
 void leds_commit() {
-  SERIAL.println("sending colors to LEDs");
+  _SERIAL_.println("sending colors to LEDs");
   SPI.beginTransaction(spiSettings);
   for (int i = 0; i < LEDS_COUNT; i++)  {
     Color current = _leds_colors[i];
@@ -92,12 +92,11 @@ void leds_commit() {
  **********/
 
 void setup() {
-  SERIAL.begin(115200);
-  SERIAL.println("setting up...");
+  _SERIAL_.begin(115200);
+  _SERIAL_.println("setting up...");
 
-  SERIAL.begin();
   leds_setAll(RGB(0, 0, 0));
-  SERIAL.println("setup complete");
+  _SERIAL_.println("setup complete");
 }
 
 int mode = 0;
